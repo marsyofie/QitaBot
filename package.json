@@ -1,0 +1,39 @@
+{
+  "name": "telegram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^6.5.3",
+    "async": "^2.6.1",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "method-override": "^3.0.0",
+    "moment": "^2.22.2",
+    "mysql2": "^1.6.1",
+    "node-telegram-bot-api": "^0.30.0",
+    "path": "^0.12.7",
+    "request": "^2.88.0",
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "sequelize": "^4.38.0",
+    "telegram-keyboard-wrapper": "^1.0.1",
+    "validator": "^10.6.0",
+    "x-ray": "^2.3.3"
+  },
+  "engines": {
+    "node": "8.11.2",
+    "npm": "6.1.0"
+  },
+  "devDependencies": {
+    "babel-minify": "^0.4.3"
+  }
+}

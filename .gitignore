@@ -1,0 +1,8 @@
+node_modules/
+m/
+logs/
+index.js.ASLI
+.env
+.env2
+chromedriver.exe
+selenium.js
