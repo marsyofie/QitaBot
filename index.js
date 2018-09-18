@@ -9,6 +9,7 @@ const request = require('request');
 const moment = require('moment');
 const app = express();
 const routes = dependencies.routes();
+const PORT = process.env.PORT || process.env.SERVER_PORT;
 require('dotenv/config')
 
 //Sequelize MYSQL
@@ -56,7 +57,7 @@ routes(express, app, {
     }
 });
 
-app.listen(process.env.SERVER_PORT, () => {
+app.listen(PORT, () => {
     let now = moment.tz(moment(), "Asia/Jakarta").format("HH")
     if (now < 17 && now > 7) {
         console.log("BOLEH")
@@ -64,7 +65,7 @@ app.listen(process.env.SERVER_PORT, () => {
         console.log("TIdak BOLEH")
     }
     console.log(process.env.MYSQL_NAME, process.env.MYSQL_USER, process.env.MYSQL_PASS)
-    console.log(`Listening on ${process.env.SERVER_PORT}`)
+    console.log(`Listening on ${PORT}`)
 })
 
 //auto hit endpoint /
