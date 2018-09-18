@@ -63,6 +63,7 @@ app.listen(process.env.SERVER_PORT, () => {
     } else {
         console.log("TIdak BOLEH")
     }
+    console.log(process.env.MYSQL_NAME, process.env.MYSQL_USER, process.env.MYSQL_PASS)
     console.log(`Listening on ${process.env.SERVER_PORT}`)
 })
 
@@ -76,7 +77,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, process.env.TIME_RECONNECT);
+}, parseInt(process.env.TIME_RECONNECT));
 
 //auto hit endpoint /duta
 setInterval(function() {
