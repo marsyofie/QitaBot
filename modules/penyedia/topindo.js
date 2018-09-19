@@ -143,8 +143,7 @@ module.exports = {
 						'User-Agent': 'okhttp/3.10.0',
 					}
 				}
-				console.log(data)
-				//callback(JSON.stringify(data))
+
 				request.post(url, data, function(err, response, rows) {
 					if (err) {
 						callback('Error saat transaksi:\n' + err.message)

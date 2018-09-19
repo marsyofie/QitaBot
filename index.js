@@ -9,8 +9,11 @@ const request = require('request');
 const moment = require('moment');
 const app = express();
 const routes = dependencies.routes();
-const PORT = process.env.PORT || process.env.SERVER_PORT;
 require('dotenv/config')
+
+const PORT = process.env.PORT || process.env.SERVER_PORT;
+const time_reconnect = 1200000;
+const time_reconnect_endpoint = 10800000;
 
 //Sequelize MYSQL
 const Op = Sequelize.Op,
@@ -62,6 +65,7 @@ app.listen(PORT, () => {
     } else {
         console.log("TIdak BOLEH")
     }
+    //console.log(time_reconnect + 1)
     console.log(`Listening on ${PORT}`)
 })
 
@@ -75,7 +79,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, 1200000);
+}, time_reconnect);
 
 //auto hit endpoint /duta
 setInterval(function() {
@@ -87,7 +91,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, 10800000 + 120000);
+}, time_reconnect_endpoint + 120000);
 
 // //auto hit endpoint /portalpulsa
 // // setInterval(function() {
@@ -111,7 +115,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, 10800000 - 7400000);
+}, time_reconnect_endpoint - 1500000);
 
 // //auto hit endpoint /payfazz
 setInterval(function() {
@@ -123,7 +127,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, 10800000);
+}, time_reconnect_endpoint);
 
 // //auto hit endpoint /bukalapak
 // // setInterval(function() {
@@ -147,7 +151,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, 10800000);
+}, time_reconnect_endpoint - 3800000);
 
 // //auto hit endpoint /xmltronik
 setInterval(function() {
@@ -159,4 +163,4 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, 10800000);
+}, time_reconnect_endpoint - 2000000);
