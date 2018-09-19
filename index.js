@@ -45,8 +45,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
-//.set('views', path.join(__dirname, 'views'))
-//.set('view engine', 'ejs')
 
 // Main logical service processes.
 routes(express, app, {
@@ -64,7 +62,6 @@ app.listen(PORT, () => {
     } else {
         console.log("TIdak BOLEH")
     }
-    console.log(process.env.MYSQL_NAME, process.env.MYSQL_USER, process.env.MYSQL_PASS)
     console.log(`Listening on ${PORT}`)
 })
 
@@ -78,7 +75,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, parseInt(process.env.TIME_RECONNECT));
+}, 1200000);
 
 //auto hit endpoint /duta
 setInterval(function() {
@@ -90,7 +87,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, parseInt(process.env.TIME_RECONNECT_ENDPOINT) + 120000);
+}, 10800000 + 120000);
 
 // //auto hit endpoint /portalpulsa
 // // setInterval(function() {
@@ -114,7 +111,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, parseInt(process.env.TIME_RECONNECT_ENDPOINT) - 7400000);
+}, 10800000 - 7400000);
 
 // //auto hit endpoint /payfazz
 setInterval(function() {
@@ -126,7 +123,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, parseInt(process.env.TIME_RECONNECT_ENDPOINT));
+}, 10800000);
 
 // //auto hit endpoint /bukalapak
 // // setInterval(function() {
@@ -150,7 +147,7 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, parseInt(process.env.TIME_RECONNECT_ENDPOINT));
+}, 10800000);
 
 // //auto hit endpoint /xmltronik
 setInterval(function() {
@@ -162,4 +159,4 @@ setInterval(function() {
             console.log(rows)
         }
     });
-}, parseInt(process.env.TIME_RECONNECT_ENDPOINT));
+}, 10800000);

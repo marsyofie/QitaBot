@@ -143,17 +143,19 @@ module.exports = {
 						'User-Agent': 'okhttp/3.10.0',
 					}
 				}
-				request.post(url, data, function(err, response, rows) {
-					if (err) {
-						callback('Error saat transaksi:\n' + err.message)
-					} else {
-						if (rows.success) {
-							callback(null, JSON.stringify(rows));
-						} else {
-							callback(JSON.stringify(rows))
-						}
-					}
-				})
+				console.log(data)
+				callback(JSON.stringify(data))
+				// request.post(url, data, function(err, response, rows) {
+				// 	if (err) {
+				// 		callback('Error saat transaksi:\n' + err.message)
+				// 	} else {
+				// 		if (rows.success) {
+				// 			callback(null, JSON.stringify(rows));
+				// 		} else {
+				// 			callback(JSON.stringify(rows))
+				// 		}
+				// 	}
+				// })
 			},
 		], function(err, result) {
 			if (err) {
