@@ -13,7 +13,7 @@ require('dotenv/config')
 
 const PORT = process.env.PORT || process.env.SERVER_PORT;
 const time_reconnect = 1200000;
-const time_reconnect_endpoint = 10800000;
+const time_reconnect_endpoint = 2 * 60 * 60 * 1000;// 2jam
 
 //Sequelize MYSQL
 const Op = Sequelize.Op,
@@ -65,7 +65,7 @@ app.listen(PORT, () => {
     } else {
         console.log("TIdak BOLEH")
     }
-    //console.log(time_reconnect + 1)
+    //console.log(time_reconnect_endpoint)
     console.log(`Listening on ${PORT}`)
 })
 
@@ -156,7 +156,7 @@ setInterval(function() {
 // //auto hit endpoint /xmltronik
 setInterval(function() {
     let data = { json: true, gzip: true, }
-    request.get(url + 'xmltronik', data, function(err, response, rows) {
+    request.get(process.env.URL_HEROKU + 'xmltronik', data, function(err, response, rows) {
         if (err) {
             console.log(err)
         } else {
