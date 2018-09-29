@@ -311,14 +311,15 @@ module.exports = (express, app, args) => {
         const chatId = msg.chat.id;
         const fromId = msg.from.id;
         const unixtime = msg.date;
-        const pesan = msg.text.split(".")
+        const pesan = msg.text.split(".");
+        const opts = { parse_mode: 'HTML' };
 
         if (fungsi_bot.filterSender(fromId)) {
             if (fungsi_bot.checkTime(unixtime)) { //check time
                 fungsi_bot.cekHargaByContact(msg, args, (err, result) => {
                     if (err) {
-                        bot.sendMessage(chatId, 'Error Bos')
-                        bot.sendMessage(chatId, err)
+                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts)
+                        // bot.sendMessage(chatId, err)
                     } else {
                         bot.sendMessage(chatId, result[1])
                         bot.sendMessage(chatId, result[0])
@@ -338,7 +339,8 @@ module.exports = (express, app, args) => {
         const chatId = msg.chat.id;
         const fromId = msg.from.id;
         const unixtime = msg.date;
-        const pesan = msg.text.split(".")
+        const pesan = msg.text.split(".");
+        const opts = { parse_mode: 'HTML' };
 
         if (fungsi_bot.filterSender(fromId)) {
             if (fungsi_bot.checkTime(unixtime)) { //check time
@@ -363,8 +365,8 @@ module.exports = (express, app, args) => {
                     },
                 ], function(err, result) {
                     if (err) {
-                        bot.sendMessage(chatId, 'Error Bos')
-                        bot.sendMessage(chatId, err)
+                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts)
+                        // bot.sendMessage(chatId, err)
                     } else {
                         bot.sendMessage(chatId, result[1])
                         bot.sendMessage(chatId, result[0])
@@ -385,13 +387,14 @@ module.exports = (express, app, args) => {
         const fromId = msg.from.id;
         const unixtime = msg.date;
         const pesan = msg.text;
+        const opts = { parse_mode: 'HTML' };
 
         if (fungsi_bot.filterSender(fromId)) {
             if (fungsi_bot.checkTime(unixtime)) { //check time
                 fungsi_bot.simpanNomer(pesan, fromId, args, (err, result) => {
                     if (err) {
-                        bot.sendMessage(chatId, 'GAGAL');
-                        bot.sendMessage(chatId, err);
+                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts);
+                        // bot.sendMessage(chatId, err);
                     } else {
                         bot.sendMessage(chatId, result);
                     }
@@ -408,14 +411,15 @@ module.exports = (express, app, args) => {
     bot.onText(/(#tpd)$/g, msg => {
         const chatId = msg.chat.id;
         const fromId = msg.from.id;
+        const opts = { parse_mode: 'HTML' };
         if (fungsi_bot.filterSender(fromId)) {
             fungsi_bot.topindoBeliPulsa(msg.text, args, (err, result) => {
                 if (err) {
-                    bot.sendMessage(chatId, 'Error Bos')
-                    bot.sendMessage(chatId, err)
+                    bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts)
+                    // bot.sendMessage(chatId, err)
                 } else {
-                    bot.sendMessage(chatId, 'Sukses')
-                    bot.sendMessage(chatId, result)
+                    bot.sendMessage(chatId, `Sukses\n==================================\n${result}`,opts)
+                    // bot.sendMessage(chatId, result)
                 }
             })
         } else {
@@ -438,14 +442,15 @@ module.exports = (express, app, args) => {
         const chatId = msg.chat.id;
         const fromId = msg.from.id;
         const phone_number = msg.contact.phone_number;
-        const unixtime = msg.date
+        const unixtime = msg.date;
+        const opts = { parse_mode: 'HTML' };
 
         if (fungsi_bot.filterSender(fromId) >= 0) {
             if (fungsi_bot.checkTime(unixtime)) {
                 fungsi_bot.simpanNomer(phone_number, fromId, args, (err, result) => {
                     if (err) {
-                        bot.sendMessage(chatId, 'GAGAL');
-                        bot.sendMessage(chatId, err);
+                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts);
+                        // bot.sendMessage(chatId, err);
                     } else {
                         bot.sendMessage(chatId, result);
                     }
@@ -475,11 +480,13 @@ module.exports = (express, app, args) => {
     // });
 
     bot.on('polling_error', err => {
-        bot.sendMessage(235462443, `pooling error, silahkan cek fungsi yang anda buat :\ncode = ${err.code}\nmessage = ${err.message}`);
+        const opts = { parse_mode: 'HTML' };
+        bot.sendMessage(235462443, `pooling error, silahkan cek fungsi yang anda buat :\ncode = ${err.code}\nmessage = ${err.message}`,opts);
     });
 
     bot.on('error', err => {
-        bot.sendMessage(235462443, `ERROR KERAS GAN :\ncode = ${err.code}\nmessage = ${err.message}`);
+        const opts = { parse_mode: 'HTML' };
+        bot.sendMessage(235462443, `ERROR KERAS GAN :\ncode = ${err.code}\nmessage = ${err.message}`,opts);
     });
     //===========================================
     //===================BOT QITA================

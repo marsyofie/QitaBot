@@ -158,7 +158,7 @@ module.exports = {
 			},
 		], function(err, result) {
 			if (err) {
-				callback(err)
+				callback(`${no_hp}\n${err}`)
 			} else {
 				callback(null, result)
 			}
