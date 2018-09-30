@@ -251,7 +251,7 @@ module.exports = (express, app, args) => {
                         }
                     });
                 });
-        }else if (query.data == 'xmltronik') {
+        } else if (query.data == 'xmltronik') {
             bot.answerCallbackQuery(query.id, { text: "Silahkan tunggu!" })
                 .then(function() {
                     // bot.sendMessage(query.from.id, "Proses pengambilan data XML Tronik");
@@ -318,7 +318,7 @@ module.exports = (express, app, args) => {
             if (fungsi_bot.checkTime(unixtime)) { //check time
                 fungsi_bot.cekHargaByContact(msg, args, (err, result) => {
                     if (err) {
-                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts)
+                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`, opts)
                         // bot.sendMessage(chatId, err)
                     } else {
                         bot.sendMessage(chatId, result[1])
@@ -365,7 +365,7 @@ module.exports = (express, app, args) => {
                     },
                 ], function(err, result) {
                     if (err) {
-                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts)
+                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`, opts)
                         // bot.sendMessage(chatId, err)
                     } else {
                         bot.sendMessage(chatId, result[1])
@@ -393,7 +393,7 @@ module.exports = (express, app, args) => {
             if (fungsi_bot.checkTime(unixtime)) { //check time
                 fungsi_bot.simpanNomer(pesan, fromId, args, (err, result) => {
                     if (err) {
-                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts);
+                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`, opts);
                         // bot.sendMessage(chatId, err);
                     } else {
                         bot.sendMessage(chatId, result);
@@ -415,10 +415,10 @@ module.exports = (express, app, args) => {
         if (fungsi_bot.filterSender(fromId)) {
             fungsi_bot.topindoBeliPulsa(msg.text, args, (err, result) => {
                 if (err) {
-                    bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts)
+                    bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`, opts)
                     // bot.sendMessage(chatId, err)
                 } else {
-                    bot.sendMessage(chatId, `Sukses\n==================================\n${result}`,opts)
+                    bot.sendMessage(chatId, `Sukses\n==================================\n${result}`, opts)
                     // bot.sendMessage(chatId, result)
                 }
             })
@@ -449,7 +449,7 @@ module.exports = (express, app, args) => {
             if (fungsi_bot.checkTime(unixtime)) {
                 fungsi_bot.simpanNomer(phone_number, fromId, args, (err, result) => {
                     if (err) {
-                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`,opts);
+                        bot.sendMessage(chatId, `Error Bos\n==================================\n${err}`, opts);
                         // bot.sendMessage(chatId, err);
                     } else {
                         bot.sendMessage(chatId, result);
@@ -481,12 +481,12 @@ module.exports = (express, app, args) => {
 
     bot.on('polling_error', err => {
         const opts = { parse_mode: 'HTML' };
-        bot.sendMessage(235462443, `pooling error, silahkan cek fungsi yang anda buat :\ncode = ${err.code}\nmessage = ${err.message}`,opts);
+        bot.sendMessage(235462443, `pooling error, silahkan cek fungsi yang anda buat :\ncode = ${err.code}\nmessage = ${err.message}`, opts);
     });
 
     bot.on('error', err => {
         const opts = { parse_mode: 'HTML' };
-        bot.sendMessage(235462443, `ERROR KERAS GAN :\ncode = ${err.code}\nmessage = ${err.message}`,opts);
+        bot.sendMessage(235462443, `ERROR KERAS GAN :\ncode = ${err.code}\nmessage = ${err.message}`, opts);
     });
     //===========================================
     //===================BOT QITA================

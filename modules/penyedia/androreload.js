@@ -2,37 +2,44 @@
 const async = require('async');
 const moment = require('moment');
 
-function getArray(list) {
-	let list_array = new Array;
-	for (let i = 2; i < list.length; i++) {
-		list_array.push([list[i]['0'], list[i]['2'].replace(".", "")])
+function getArray(raw_json) {
+	let arr_push = []
+	for (let j = 2; j < raw_json.length; j++) {
+		let kode = raw_json[j]['0']
+		let harga = raw_json[j]['2'].replace(/\./g, "")
+
+		//arr_push = [...arr_push, [kode, harga]]
+		arr_push.push([kode, harga])
 	}
-	return list_array;
+	return arr_push;
 }
 
 function getFinalJson(raw_json) {
-	let json = {}
+	let json = {};
+	json.tsel = [];
+
 	for (let i = 0; i < raw_json.length; i++) {
-		switch (i) {
-			case 0:
-				json.tsel = getArray(raw_json[i])
+
+		let provider = raw_json[i][0]['0'];
+
+		switch (provider.toUpperCase()) {
+			case 'INDOSAT':
+				json.indosat = getArray(raw_json[i]);
 				break;
-			case 1:
+			case 'TREE REGULAR':
+				json.three = getArray(raw_json[i]);
+				break;
+			case 'AXIS REGULAR':
+				json.axis = getArray(raw_json[i]);
+				break;
+			case 'TELKOMSEL PROMO':
+			case 'TELKOMSEL REGULAR':
+			case 'TELKOMSEL MKIOS':
 				json.tsel = [...json.tsel, ...getArray(raw_json[i])]
 				break;
-			case 2:
-				json.xl = getArray(raw_json[i])
-				break
-			case 3:
-				json.axis = getArray(raw_json[i])
+			case 'XL REGULAR':
+				json.xl = getArray(raw_json[i]);
 				break;
-			case 4:
-				json.indosat = getArray(raw_json[i])
-				break
-			case 7:
-				json.three = getArray(raw_json[i])
-				break
-
 		}
 	}
 	return json;
