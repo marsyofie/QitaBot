@@ -177,7 +177,8 @@ function replyFormat(penyedia_id, no_hp, kode, harga) {
             return [`${kode}.${no_hp}.${process.env.PIN_TOPINDO}#tpd`, `QITA CELL : Rp. ${harga}`, 'LANGSUNG DI COPY DI SINI AE MA']
             break
         case 8:
-            return [`${kode}.${no_hp}.${process.env.PIN_XMLTRONIK}`, `centerxml0Bot : Rp. ${harga}`]
+            // return [`${kode}.${no_hp}.${process.env.PIN_XMLTRONIK}`, `centerxml0Bot : Rp. ${harga}`]
+            return [`${kode}.${no_hp}.${process.env.PIN_XMLTRONIK}`, `center xml tronik : Rp. ${harga}`, 'DICOPY DI WA CENTER XML TRONIK']
             break
         default:
             return [`Mohon maaf anda belum mendefinisikan fungsi reply`, `Terima kasih`]
