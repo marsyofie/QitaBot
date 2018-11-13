@@ -348,7 +348,7 @@ module.exports = {
                     //provider_ipay: provider_id_ipay, //disable because i hate salesman 
                     provider_payfazz: provider_id_payfazz,
                     //provider_portal: provider_id_portal,
-                    provider_andro: provider_id_andro,
+                    provider_andro: '0',//provider_id_andro,
                     //provider_bukalapak: provider_id_bukalapak,
                     provider_topindo: provider_id_topindo,
                     provider_xmltronik: provider_id_xmltronik,
