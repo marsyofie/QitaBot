@@ -14,6 +14,7 @@ module.exports = (express, app, args) => {
         .addRow({ text: "Duta Pulsa", callback_data: "dutapulsa" }, { text: "XML Tronik", callback_data: "xmltronik" })
         .addRow({ text: "Andro Reload", callback_data: "androreload" }, { text: "Bukalapak", callback_data: "bukalapak" })
         .addRow({ text: "Payfazz", callback_data: "payfazz" }, { text: "Topindo", callback_data: "topindo" })
+        .addRow({ text: "TMR", callback_data: "TMR" }, { text: "under construction", callback_data: "under_construction" })
         .addRow({ text: "Get Report", callback_data: "getreport" }, { text: "Get DB", callback_data: "db" }, { text: "Detail Report", callback_data: "detailreport" }, );
 
     app.get('/', (request, response) => {
@@ -111,6 +112,18 @@ module.exports = (express, app, args) => {
 
     app.get('/xmltronik', (req, res) => {
         fungsi_bot.xmltronik(args, (err, result) => {
+            if (err) {
+                bot.sendMessage(235462443, err)
+                res.status(500).json(err)
+            } else {
+                bot.sendMessage(235462443, result)
+                res.json(result)
+            }
+        });
+    })
+
+    app.get('/tmr', (req, res) => {
+        fungsi_bot.tmr(args, (err, result) => {
             if (err) {
                 bot.sendMessage(235462443, err)
                 res.status(500).json(err)
@@ -269,6 +282,19 @@ module.exports = (express, app, args) => {
                 .then(function() {
                     // bot.sendMessage(query.from.id, "Proses pengambilan data DB");
                     fungsi_bot.getPropertiesTable(args, (err, result) => {
+                        if (err) {
+                            bot.sendMessage(chatId, 'GAGAL')
+                            bot.sendMessage(chatId, err)
+                        } else {
+                            bot.sendMessage(chatId, result)
+                        }
+                    })
+                });
+        } else if (query.data == 'TMR') {
+            bot.answerCallbackQuery(query.id, { text: "Silahkan tunggu!" })
+                .then(function() {
+                    // bot.sendMessage(query.from.id, "Proses pengambilan data DB");
+                    fungsi_bot.tmr(args, (err, result) => {
                         if (err) {
                             bot.sendMessage(chatId, 'GAGAL')
                             bot.sendMessage(chatId, err)

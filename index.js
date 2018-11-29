@@ -164,3 +164,16 @@ setInterval(function() {
         }
     });
 }, time_reconnect_endpoint - 2000000);
+
+
+// //auto hit endpoint /tmr
+setInterval(function() {
+    let data = { json: true, gzip: true, }
+    request.get(process.env.URL_HEROKU + 'tmr', data, function(err, response, rows) {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log(rows)
+        }
+    });
+}, time_reconnect_endpoint - 3500000);

@@ -8,33 +8,33 @@ const moment = require('moment');
 //      START CONFIG HLR
 // #########################
 var operator = {
-	indosat: process.env.INDOSAT.replace(" ", "").split(","),
-	telkomsel: process.env.TELKOMSEL.replace(" ", "").split(","),
-	xl: process.env.XL.replace(" ", "").split(","),
-	axis: process.env.AXIS.replace(" ", "").split(","),
-	three: process.env.THREE.replace(" ", "").split(",")
+    indosat: process.env.INDOSAT.replace(" ", "").split(","),
+    telkomsel: process.env.TELKOMSEL.replace(" ", "").split(","),
+    xl: process.env.XL.replace(" ", "").split(","),
+    axis: process.env.AXIS.replace(" ", "").split(","),
+    three: process.env.THREE.replace(" ", "").split(",")
 }
 
 //config.operator;
 
 //operator regional
 var indosat = {
-	jatim: process.env.HLR_INDOSAT_JATIM.replace(" ", "").split(",")
+    jatim: process.env.HLR_INDOSAT_JATIM.replace(" ", "").split(",")
 };
 var telkomsel = {
-	jatim: process.env.HLR_TELKOMSEL_JATIM.replace(" ", "").split(","),
-	jabar: process.env.HLR_TELKOMSEL_JABAR.replace(" ", "").split(","),
-	jabodetabek: process.env.HLR_TELKOMSEL_JABODETABEK.replace(" ", "").split(","),
-	jateng: process.env.HLR_TELKOMSEL_JATENG.replace(" ", "").split(","),
-	kalimantan: process.env.HLR_TELKOMSEL_KALIMANTAN.replace(" ", "").split(","),
-	sumbagsel: process.env.HLR_TELKOMSEL_SUMBAGSEL.replace(" ", "").split(","),
-	sumbagteng: process.env.HLR_TELKOMSEL_SUMBAGTENG.replace(" ", "").split(","),
-	sumbagut: process.env.HLR_TELKOMSEL_SUMBAGUT.replace(" ", "").split(","),
-	balinusra: process.env.HLR_TELKOMSEL_BALINUSRA.replace(" ", "").split(","),
+    jatim: process.env.HLR_TELKOMSEL_JATIM.replace(" ", "").split(","),
+    jabar: process.env.HLR_TELKOMSEL_JABAR.replace(" ", "").split(","),
+    jabodetabek: process.env.HLR_TELKOMSEL_JABODETABEK.replace(" ", "").split(","),
+    jateng: process.env.HLR_TELKOMSEL_JATENG.replace(" ", "").split(","),
+    kalimantan: process.env.HLR_TELKOMSEL_KALIMANTAN.replace(" ", "").split(","),
+    sumbagsel: process.env.HLR_TELKOMSEL_SUMBAGSEL.replace(" ", "").split(","),
+    sumbagteng: process.env.HLR_TELKOMSEL_SUMBAGTENG.replace(" ", "").split(","),
+    sumbagut: process.env.HLR_TELKOMSEL_SUMBAGUT.replace(" ", "").split(","),
+    balinusra: process.env.HLR_TELKOMSEL_BALINUSRA.replace(" ", "").split(","),
 };
 var xl = {
-	jatim: process.env.HLR_XL_JATIM.replace(" ", "").split(","),
-	jabodetabek: process.env.HLR_XL_JABODETABEK.replace(" ", "").split(","),
+    jatim: process.env.HLR_XL_JATIM.replace(" ", "").split(","),
+    jabodetabek: process.env.HLR_XL_JABODETABEK.replace(" ", "").split(","),
 };
 //end operator regional
 // #########################
@@ -136,7 +136,7 @@ function getGeneralHlrRegion(no_hp) {
 }
 
 function filterIndosatSMS(kode) {
-    let indosat_SMS =  process.env.INDOSAT_SMS.replace(" ", "").split(",");
+    let indosat_SMS = process.env.INDOSAT_SMS.replace(" ", "").split(",");
     if (indosat_SMS.indexOf(kode) >= 0) return false
     return true
 }
@@ -348,7 +348,7 @@ module.exports = {
                     //provider_ipay: provider_id_ipay, //disable because i hate salesman 
                     provider_payfazz: provider_id_payfazz,
                     //provider_portal: provider_id_portal,
-                    provider_andro: '0',//provider_id_andro,
+                    provider_andro: '0', //provider_id_andro,
                     //provider_bukalapak: provider_id_bukalapak,
                     provider_topindo: provider_id_topindo,
                     provider_xmltronik: provider_id_xmltronik,
@@ -701,5 +701,109 @@ module.exports = {
             }).catch(err => {
                 callback('Endpoint /mpb telah di hit dengan error 1 :\n' + err.message)
             });
+    },
+
+    //====== totabian multi reload
+    tmr: (args, callback) => {
+        var token = '';
+        async.waterfall([
+            function auth(callback) {
+                let url = 'http://128.199.239.8:5247/auth/authenticate';
+                let data = {
+                    gzip: true,
+                    json: true,
+                    timeout: 120000,
+                    form: {
+                        "username": process.env.USERNAME_WEB_TMR,
+                        "password": process.env.PASSWORD_WEB_TMR,
+                        "irstoken": "",
+                        "data": process.env.DATA_WEB_TMR,
+                    },
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+                        'Origin': 'http://128.199.239.8:5247',
+                        'Referer': 'http://128.199.239.8:5247/',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'Accept': 'application/json, text/javascript, */*; q=0.01'
+                    }
+                }
+                request.post(url, data, function(err, response, rows) {
+                    if (err) {
+                        //callback(err.message)
+                        callback('Endpoint /tmr telah di hit dengan error 1:\n' + err.message)
+                    } else {
+                        if (rows.success) {
+                            token = rows.token;
+                            callback(null, rows);
+                        } else {
+                            callback('Endpoint /tmr telah di hit dengan error 2:\n' + JSON.stringify(rows))
+                        }
+                    }
+                })
+            },
+            function saveToken(data, callback) {
+                let tokenDb = args.dependencies.models('tokenDb')(args.sequelize.parent, args.sequelize.child);
+                let query = {
+                    token: token,
+                    updated_at: moment.tz(moment(), "Asia/Jakarta").format()
+                }
+                let where = {
+                    where: { id_server: 'tmr' }
+                }
+                tokenDb.update(query, where).then(rows => {
+                    callback(null, token)
+                }).catch(err => {
+                    callback(err.message)
+                })
+            },
+            function getData(prev_data, callback) {
+                let fungsi_tmr = args.dependencies.modules('penyedia/tmr')
+                var now = Date.now();
+                let url = `http://128.199.239.8:5247/api/pricelist`;
+                let data = {
+                    gzip: true,
+                    json: true,
+                    timeout: 120000,
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+                        'Accept': 'application/json, text/javascript, */*; q=0.01',
+                        'Accept-Encoding': 'gzip, deflate',
+                        'Accept-Language': 'en-US,en;q=0.9,id;q=0.8,ms;q=0.7',
+                        'Connection': 'keep-alive',
+                        'Host': '128.199.239.8:5247',
+                        'Referer': 'http://128.199.239.8:5247/daftarharga',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }
+                request.get(url, data, function(err, response, rows) {
+                    if (err) {
+                        callback('Endpoint /tmr telah di hit dengan error 3:\n' + err.message)
+                    } else {
+                        if (rows.success) {
+                            console.log(rows)
+                            callback(null, "sukses om")
+                            // fungsi_tmr.createHarga(rows, args, (err, result) => {
+                            //     if (err) {
+                            //         callback('Endpoint /tmr telah di hit dengan error 5:\n' + err)
+                            //     } else {
+                            //         //console.log(result)
+                            //         callback(null, 'Endpoint /tmr telah di hit SUKSES\n' + result)
+                            //     }
+                            // })
+                        } else {
+                            callback('Endpoint /tmr telah di hit dengan error 4:\n' + JSON.stringify(rows))
+                        }
+                    }
+                })
+            },
+        ], function(err, result) {
+            if (err) {
+                callback(err)
+            } else {
+                callback(null, result)
+            }
+        });
     },
 };
