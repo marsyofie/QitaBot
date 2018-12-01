@@ -455,7 +455,7 @@ module.exports = {
     },
 
     //====== DUTA PULSA
-    duta: (args, callback) => {
+/*    duta_scrapper: (args, callback) => {
         const scraper = args.dependencies.modules('table_scrapper');
         const fungsi_duta = args.dependencies.modules('penyedia/dutapulsa')
         let url = 'http://180.250.182.114:9999/rego/source.php';
@@ -473,6 +473,36 @@ module.exports = {
             }).catch(err => {
                 callback('Endpoint /dutapulsa telah di hit dengan error 1 :\n' + err.message)
             });
+    },*/
+    duta:(args,callback) => {
+        const HtmlTableToJson = require('html-table-to-json');
+        var url = 'http://180.250.182.114:9999/rego/source.php';
+        const fungsi_duta = args.dependencies.modules('penyedia/dutapulsa');
+
+        var data = {
+            gzip: true,
+        }
+        request.get(url, data, function(err, response, rows) {
+            if (err) {
+                console.log(err)
+                res.json({ message: 'Gagal Saat Request' })
+                //bot.sendMessage(chatId, err)
+            } else {
+                var raw_result = rows.replace(/[()]/gi, '').replace(/document.write"/gi, ``)
+                const jsonTables = new HtmlTableToJson(raw_result);
+                var hasil = jsonTables.results;
+
+                // console.log(hasil)
+                fungsi_duta.createHarga(hasil, args, (err, result) => {
+                    if (err) {
+                        callback('Endpoint /dutapulsa telah di hit dengan error 2 :\n' + err)
+                    } else {
+                        callback(null, 'Endpoint /dutapulsa telah di hit SUKSES\n' + result)
+                    }
+                })
+
+            }
+        })
     },
 
     //====== ANDRO RELOAD

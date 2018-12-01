@@ -15,13 +15,13 @@ function getFinalJson(raw_json) {
 		copy = [];
 	let i = 1;
 	for (let value of raw_json) {
-		if (value['0'].toUpperCase() == 'KODEVOC') { //
+		if (value['1'].toUpperCase() == 'KODEVOC') { //
 			//break;
 		} else {
 			//delete value['2']
-			if (value['1'] == undefined) {
+			if (value['2'] == undefined) {
 				//i -= 1
-				value['1'] = i;
+				value['2'] = i;
 				copy.push(value)
 			} else {
 				arrayToMap.push(value);
@@ -30,7 +30,7 @@ function getFinalJson(raw_json) {
 		}
 	}
 
-	let mappedArray = arrayToMap.map(function(item) { return [item['0'], item['2'].replace(".", "")]; });
+	let mappedArray = arrayToMap.map(function(item) { return [item['1'], item['3'].replace(".", "")]; });
 
 	let indosat = [],
 		indosat_jatim = [],
@@ -51,9 +51,9 @@ function getFinalJson(raw_json) {
 		tsel_balinusra = [];
 
 	for (let i = 0; i < copy.length - 1; i++) {
-		let regional = copy[i]['0'];
-		let start_array = parseInt(copy[i]['1']) - 1;
-		let end_array = parseInt(copy[i + 1]['1']) - 1
+		let regional = copy[i]['1'];
+		let start_array = parseInt(copy[i]['2']) - 1;
+		let end_array = parseInt(copy[i + 1]['2']) - 1
 		if (regional == 'IM3' || regional == 'ISATPROMO') {
 			indosat.push(mappedArray.slice(start_array, end_array))
 		} else if (regional == 'ISATSDA') {
