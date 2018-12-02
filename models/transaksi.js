@@ -14,6 +14,7 @@ module.exports = (parent, child) => {
         provider_bukalapak: { type: parent.INTEGER },
         provider_topindo: { type: parent.INTEGER, allowNull: false },
         provider_xmltronik: { type: parent.INTEGER, allowNull: false },
+        provider_tmr: { type: parent.INTEGER, allowNull: false },
         pengirim: { type: parent.STRING, },
         created_at: { type: parent.DATE, allowNull: false },
     }, {

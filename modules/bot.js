@@ -180,6 +180,9 @@ function replyFormat(penyedia_id, no_hp, kode, harga) {
             // return [`${kode}.${no_hp}.${process.env.PIN_XMLTRONIK}`, `centerxml0Bot : Rp. ${harga}`]
             return [`${kode}.${no_hp}.${process.env.PIN_XMLTRONIK}`, `center xml tronik : Rp. ${harga}`, 'DICOPY DI WA CENTER XML TRONIK']
             break
+        case 9:
+            return [`${kode}.${no_hp}.${process.env.PIN_TMR}`, `TOTABIAN MULTI RELOAD : Rp. ${harga}`]
+            break
         default:
             return [`Mohon maaf anda belum mendefinisikan fungsi reply`, `Terima kasih`]
     }
@@ -335,8 +338,9 @@ module.exports = {
             //let provider_id_bukalapak = getGeneralHlrRegion(no_hp)
             let provider_id_topindo = getGeneralHlrRegion(no_hp)
             let provider_id_xmltronik = getHlrRegionIpay(no_hp)
+            let provider_id_tmr = getGeneralHlrRegion(no_hp)
 
-            if (!provider_id_duta || !provider_id_payfazz || !provider_id_andro || !provider_id_topindo || !provider_id_xmltronik) { //
+            if (!provider_id_duta || !provider_id_payfazz || !provider_id_andro || !provider_id_topindo || !provider_id_xmltronik || !provider_id_tmr) { //
                 callback('Tidak Ditemukan di HLR Kami (THREE, AXIS, INDOSAT, XL, TELKOMSEL)')
                 return
             } else {
@@ -352,6 +356,7 @@ module.exports = {
                     //provider_bukalapak: provider_id_bukalapak,
                     provider_topindo: provider_id_topindo,
                     provider_xmltronik: provider_id_xmltronik,
+                    provider_tmr: provider_id_tmr,
                     pengirim: id_sender,
                     created_at: moment.tz(moment(), "Asia/Jakarta").format()
                 }).then(result => {
@@ -455,26 +460,26 @@ module.exports = {
     },
 
     //====== DUTA PULSA
-/*    duta_scrapper: (args, callback) => {
-        const scraper = args.dependencies.modules('table_scrapper');
-        const fungsi_duta = args.dependencies.modules('penyedia/dutapulsa')
-        let url = 'http://180.250.182.114:9999/rego/source.php';
-        scraper
-            .get(url)
-            .then(rows => {
-                //console.log(rows)
-                fungsi_duta.createHarga(rows, args, (err, result) => {
-                    if (err) {
-                        callback('Endpoint /dutapulsa telah di hit dengan error 2 :\n' + err)
-                    } else {
-                        callback(null, 'Endpoint /dutapulsa telah di hit SUKSES\n' + result)
-                    }
-                })
-            }).catch(err => {
-                callback('Endpoint /dutapulsa telah di hit dengan error 1 :\n' + err.message)
-            });
-    },*/
-    duta:(args,callback) => {
+    /*    duta_scrapper: (args, callback) => {
+            const scraper = args.dependencies.modules('table_scrapper');
+            const fungsi_duta = args.dependencies.modules('penyedia/dutapulsa')
+            let url = 'http://180.250.182.114:9999/rego/source.php';
+            scraper
+                .get(url)
+                .then(rows => {
+                    //console.log(rows)
+                    fungsi_duta.createHarga(rows, args, (err, result) => {
+                        if (err) {
+                            callback('Endpoint /dutapulsa telah di hit dengan error 2 :\n' + err)
+                        } else {
+                            callback(null, 'Endpoint /dutapulsa telah di hit SUKSES\n' + result)
+                        }
+                    })
+                }).catch(err => {
+                    callback('Endpoint /dutapulsa telah di hit dengan error 1 :\n' + err.message)
+                });
+        },*/
+    duta: (args, callback) => {
         const HtmlTableToJson = require('html-table-to-json');
         var url = 'http://180.250.182.114:9999/rego/source.php';
         const fungsi_duta = args.dependencies.modules('penyedia/dutapulsa');
@@ -812,16 +817,14 @@ module.exports = {
                         callback('Endpoint /tmr telah di hit dengan error 3:\n' + err.message)
                     } else {
                         if (rows.success) {
-                            console.log(rows)
-                            callback(null, "sukses om")
-                            // fungsi_tmr.createHarga(rows, args, (err, result) => {
-                            //     if (err) {
-                            //         callback('Endpoint /tmr telah di hit dengan error 5:\n' + err)
-                            //     } else {
-                            //         //console.log(result)
-                            //         callback(null, 'Endpoint /tmr telah di hit SUKSES\n' + result)
-                            //     }
-                            // })
+                            fungsi_tmr.createHarga(rows, args, (err, result) => {
+                                if (err) {
+                                    callback('Endpoint /tmr telah di hit dengan error 5:\n' + err)
+                                } else {
+                                    //console.log(result)
+                                    callback(null, 'Endpoint /tmr telah di hit SUKSES\n' + result)
+                                }
+                            })
                         } else {
                             callback('Endpoint /tmr telah di hit dengan error 4:\n' + JSON.stringify(rows))
                         }
