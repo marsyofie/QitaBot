@@ -210,7 +210,7 @@ module.exports = {
     },
 
     getPropertiesTable: (args, callback) => {
-        let query = `SELECT table_schema as "db_name", SUM(data_length + index_length) / 1024 / 1024 as "size" FROM information_schema.tables WHERE table_schema = 'sql12250629' GROUP BY table_schema ORDER BY SUM(data_length + index_length) DESC ;`;
+        let query = `SELECT table_schema as "db_name", SUM(data_length + index_length) / 1024 / 1024 as "size" FROM information_schema.tables WHERE table_schema = '${process.env.MYSQL_NAME}' GROUP BY table_schema ORDER BY SUM(data_length + index_length) DESC ;`;
         args.sequelize.child.query(query).then(result => {
             let str = `Nama DB\t: ${result[0][0].db_name}\nSize\t: ${result[0][0].size} MB`
             callback(null, str);
