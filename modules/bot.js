@@ -356,13 +356,14 @@ module.exports = {
                     //provider_bukalapak: provider_id_bukalapak,
                     provider_topindo: provider_id_topindo,
                     provider_xmltronik: provider_id_xmltronik,
-                    provider_tmr: provider_id_tmr,
+                    provider_tmr: null,
                     pengirim: id_sender,
                     created_at: moment.tz(moment(), "Asia/Jakarta").format()
                 }).then(result => {
                     callback(null, 'Sukses simpan, selanjutnya ketik *nominal.1234*')
                     return
                 }).catch(err => {
+                    console.log(err)
                     callback(err.message)
                     return
                 })
