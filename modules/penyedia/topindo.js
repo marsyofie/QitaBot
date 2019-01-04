@@ -146,7 +146,13 @@ module.exports = {
 
 				request.post(url, data, function(err, response, rows) {
 					if (err) {
-						callback('Error saat transaksi:\n' + err.message)
+						switch(err.code){
+							case 'ESOCKETTIMEOUT':
+								callback(null, 'Transaksi sedang diproses, silahkan tunggu bos.')
+								break;
+							default:
+								callback('Error saat transaksi:\n' + err.message)
+						}
 					} else {
 						if (rows.success) {
 							callback(null, JSON.stringify(rows));
