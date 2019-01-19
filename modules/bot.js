@@ -697,7 +697,7 @@ module.exports = {
     xmltronik: (args, callback) => {
         const scraper = args.dependencies.modules('table_scrapper');
         const fungsi_xmltronik = args.dependencies.modules('penyedia/xmltronik')
-        let url = 'http://reportsms.xmltronik.com/harga.js.php?lvl=MD&cttn=pulsa';
+        let url = 'http://reportsms.xmltronik.com/harga.js.php?id=b262b9778401ca67f5c64bdb7becbda8cb34a7298eeacbf589551d49ab6b4c535892ff22611f2e98d1b60bc3046cdf67f1cb-59';
 
         scraper
             .get(url)
