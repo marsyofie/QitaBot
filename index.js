@@ -82,16 +82,16 @@ setInterval(function() {
 }, time_reconnect);
 
 //auto hit endpoint /duta
-setInterval(function() {
-    let data = { json: true, gzip: true, }
-    request.get(process.env.URL_HEROKU + 'duta', data, function(err, response, rows) {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(rows)
-        }
-    });
-}, time_reconnect_endpoint + 120000);
+// setInterval(function() {
+//     let data = { json: true, gzip: true, }
+//     request.get(process.env.URL_HEROKU + 'duta', data, function(err, response, rows) {
+//         if (err) {
+//             console.log(err)
+//         } else {
+//             console.log(rows)
+//         }
+//     });
+// }, time_reconnect_endpoint + 120000);
 
 // //auto hit endpoint /portalpulsa
 // // setInterval(function() {
@@ -106,16 +106,16 @@ setInterval(function() {
 // // }, parseInt(process.env.TIME_RECONNECT_ENDPOINT) - 7200000);
 
 //auto hit endpoint /androreload
-setInterval(function() {
-    let data = { gzip: true, }
-    request.get(process.env.URL_HEROKU + 'androreload', data, function(err, response, rows) {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(rows)
-        }
-    });
-}, time_reconnect_endpoint - 1500000);
+// setInterval(function() {
+//     let data = { gzip: true, }
+//     request.get(process.env.URL_HEROKU + 'androreload', data, function(err, response, rows) {
+//         if (err) {
+//             console.log(err)
+//         } else {
+//             console.log(rows)
+//         }
+//     });
+// }, time_reconnect_endpoint - 1500000);
 
 // //auto hit endpoint /payfazz
 setInterval(function() {

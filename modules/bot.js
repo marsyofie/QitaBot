@@ -427,13 +427,13 @@ module.exports = {
         }
         request.get(url, data, function(err, response, rows) {
             if (err) {
-                callback('Endpoint /payfazz telah di hit dengan error 1 :\n' + err.message)
+                callback('PAYFAZZ --> ERROR 1:\n' + err.message)
             } else {
                 fungsi_payfazz.createHarga(rows, args, (err, result) => {
                     if (err) {
-                        callback('Endpoint /payfazz telah di hit dengan error 2 :\n' + err)
+                        callback('PAYFAZZ --> ERROR 2 :\n' + err)
                     } else {
-                        callback(null, 'Endpoint /payfazz telah di hit SUKSES\n' + result)
+                        callback(null, 'PAYFAZZ --> SUKSES' /*+ result*/)
                     }
                 })
             }
@@ -587,13 +587,13 @@ module.exports = {
                 request.post(url, data, function(err, response, rows) {
                     if (err) {
                         //callback(err.message)
-                        callback('Endpoint /topindo telah di hit dengan error 1:\n' + err.message)
+                        callback('TOPINDO --> ERROR 1:\n' + err.message)
                     } else {
                         if (rows.success) {
                             token = rows.token;
                             callback(null, rows);
                         } else {
-                            callback('Endpoint /topindo telah di hit dengan error 2:\n' + JSON.stringify(rows))
+                            callback('TOPINDO --> ERROR 2:\n' + JSON.stringify(rows))
                         }
                     }
                 })
@@ -610,7 +610,7 @@ module.exports = {
                 tokenDb.update(query, where).then(rows => {
                     callback(null, token)
                 }).catch(err => {
-                    callback(err.message)
+                    callback('TOPINDO --> ERROR 3:\n' +err.message)
                 })
             },
             function getData(prev_data, callback) {
@@ -630,19 +630,19 @@ module.exports = {
                 }
                 request.get(url, data, function(err, response, rows) {
                     if (err) {
-                        callback('Endpoint /topindo telah di hit dengan error 3:\n' + err.message)
+                        callback('TOPINDO --> ERROR 4:\n' + err.message)
                     } else {
                         if (rows.success) {
                             fungsi_topindo.createHarga(rows, args, (err, result) => {
                                 if (err) {
-                                    callback('Endpoint /topindo telah di hit dengan error 5:\n' + err)
+                                    callback('TOPINDO --> ERROR 5:\n' + err)
                                 } else {
                                     //console.log(result)
-                                    callback(null, 'Endpoint /topindo telah di hit SUKSES\n' + result)
+                                    callback(null, 'TOPINDO --> SUKSES' /*+ result*/)
                                 }
                             })
                         } else {
-                            callback('Endpoint /topindo telah di hit dengan error 4:\n' + JSON.stringify(rows))
+                            callback('TOPINDO --> ERROR 6:\n' + JSON.stringify(rows))
                         }
                     }
                 })
@@ -706,13 +706,13 @@ module.exports = {
                 //callback(rows.length)
                 fungsi_xmltronik.createHarga(rows, args, (err, result) => {
                     if (err) {
-                        callback('Endpoint /xmltronik telah di hit dengan error 2 :\n' + err)
+                        callback('XMLTRONIK --> ERROR 2 :\n' + err)
                     } else {
-                        callback(null, 'Endpoint /xmltronik telah di hit SUKSES\n' + result)
+                        callback(null, 'XMLTRONIK --> SUKSES' /*+ result*/)
                     }
                 })
             }).catch(err => {
-                callback('Endpoint /xmltronik telah di hit dengan error 1 :\n' + err.message)
+                callback('XMLTRONIK --> ERROR 1 :\n' + err.message)
             });
     },
 

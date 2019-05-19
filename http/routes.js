@@ -18,7 +18,7 @@ module.exports = (express, app, args) => {
         .addRow({ text: "Get Report", callback_data: "getreport" }, { text: "Get DB", callback_data: "db" }, { text: "Detail Report", callback_data: "detailreport" }, );
 
     app.get('/', (request, response) => {
-        bot.sendMessage(235462443, 'Endpoint / telah di hit')
+        // bot.sendMessage(235462443, 'Endpoint / telah di hit')
         return response.status(200).send({
             message: "It's Work"
         });
@@ -132,6 +132,16 @@ module.exports = (express, app, args) => {
                 res.json(result)
             }
         });
+    })
+
+    app.post('/test', (req, res) => {
+        const duitku = args.dependencies.modules('duitku/duitku');
+
+        duitku.inquiry(args, (err,rows) => {
+            // if(err){
+
+            // }
+        })
     })
 
     //===========================================
