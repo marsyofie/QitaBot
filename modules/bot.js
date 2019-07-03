@@ -175,7 +175,7 @@ function replyFormat(penyedia_id, no_hp, kode, harga) {
             //kode = kode.replace(/[a-zA-Z]/g, "");
             //return [`${kode}.${no_hp}.${process.env.PIN_TOPINDO}`, `TRX2009 : Rp. ${harga}`] // topindo
             // return [`${kode}.${no_hp}.${process.env.PIN_TOPINDO}#tpd`, `QITA CELL : Rp. ${harga}`, 'LANGSUNG DI COPY DI SINI AE MA']
-            return [`${kode}.${no_hp}.${process.env.PIN_TOPINDO}`, `TOPINDO : Rp. ${harga}`, 'WA TOPINDO']
+            return [`${kode}.${no_hp}.${process.env.PIN_TOPINDO}`, `TOPINDO : Rp. ${harga}`, 'TRX2009']
             break
         case 8:
             // return [`${kode}.${no_hp}.${process.env.PIN_XMLTRONIK}`, `centerxml0Bot : Rp. ${harga}`]
