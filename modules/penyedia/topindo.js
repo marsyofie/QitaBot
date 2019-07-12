@@ -59,7 +59,7 @@ function getFinalJson(raw_json) {
     raw_json.pulsa.forEach(value => {
 
 
-        if (value.namaoperator.includes('03.TELKOMSEL REGULER') || value.namaoperator.includes('02.TELKOMSEL PROMO') || value.namaoperator.includes('01.TELKOMSEL SUPER PROMO')) { //|| value[0].includes('02.TELKOMSEL PROMO') || value[0].includes('01.TELKOMSEL SUPER PROMO')
+        if (value.namaoperator.includes('TELKOMSEL REGULER') || value.namaoperator.includes('TELKOMSEL PROMO') || value.namaoperator.includes('TELKOMSEL SUPER PROMO')) { //|| value[0].includes('02.TELKOMSEL PROMO') || value[0].includes('01.TELKOMSEL SUPER PROMO')
             json.tsel = [...json.tsel, ...getHarga(value.data)];
         } else if (value.namaoperator.includes('05.INDOSAT')) {
             json.indosat = [...json.indosat, ...getHarga(value.data)]

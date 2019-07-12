@@ -331,17 +331,17 @@ module.exports = {
         no_hp = no_hp.replace(/ /g, "").replace(/-/g, "").replace("+62", "0");
 
         if (scanHP(no_hp)) {
-            let provider_id_duta = getHlrRegionDuta(no_hp);
+            // let provider_id_duta = getHlrRegionDuta(no_hp);
             //let provider_id_ipay = getHlrRegionIpay(no_hp); //disable because i hate salesman 
             let provider_id_payfazz = getGeneralHlrRegion(no_hp)
             //let provider_id_portal = getGeneralHlrRegion(no_hp)
-            let provider_id_andro = getGeneralHlrRegion(no_hp)
+            // let provider_id_andro = getGeneralHlrRegion(no_hp)
             //let provider_id_bukalapak = getGeneralHlrRegion(no_hp)
             let provider_id_topindo = getGeneralHlrRegion(no_hp)
             let provider_id_xmltronik = getHlrRegionIpay(no_hp)
-            let provider_id_tmr = getGeneralHlrRegion(no_hp)
+            // let provider_id_tmr = getGeneralHlrRegion(no_hp)
 
-            if (!provider_id_duta || !provider_id_payfazz || !provider_id_andro || !provider_id_topindo || !provider_id_xmltronik || !provider_id_tmr) { //
+            if (!provider_id_payfazz || !provider_id_topindo || !provider_id_xmltronik ) { //
                 callback('Tidak Ditemukan di HLR Kami (THREE, AXIS, INDOSAT, XL, TELKOMSEL)')
                 return
             } else {
@@ -349,12 +349,12 @@ module.exports = {
 
                 transaksi.create({
                     no_hp: no_hp,
-                    provider_duta: provider_id_duta,
-                    //provider_ipay: provider_id_ipay, //disable because i hate salesman 
+                    provider_duta: null,
+                    provider_ipay: null, //disable because i hate salesman 
                     provider_payfazz: provider_id_payfazz,
-                    //provider_portal: provider_id_portal,
-                    provider_andro: '0', //provider_id_andro,
-                    //provider_bukalapak: provider_id_bukalapak,
+                    provider_portal: null,
+                    provider_andro: null, //provider_id_andro,
+                    provider_bukalapak: null,
                     provider_topindo: provider_id_topindo,
                     provider_xmltronik: provider_id_xmltronik,
                     provider_tmr: null,
@@ -423,7 +423,7 @@ module.exports = {
             gzip: true,
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
-                'Referer': 'http://178.128.91.133:4049/'
+                'Referer': 'https://www.payfazz.com/'
             }
         }
         request.get(url, data, function(err, response, rows) {
@@ -492,7 +492,7 @@ module.exports = {
         request.get(url, data, function(err, response, rows) {
             if (err) {
                 console.log(err)
-                res.json({ message: 'Gagal Saat Request' })
+                callback('Gagal Saat Request : ' + err.message)
                 //bot.sendMessage(chatId, err)
             } else {
                 var raw_result = rows.replace(/[()]/gi, '').replace(/document.write"/gi, ``)
