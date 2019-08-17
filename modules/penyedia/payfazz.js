@@ -9,7 +9,7 @@ function getArray(list) {
 	// 	arr_result.push([list[j].operatorPlanCode, list[j].sellPrice])
 	// }
 	// return arr_result;
-	return list.map(function(item) { return [item['operatorPlanCode'], item['sellPrice']-cashback]; });
+	return list.map(function(item) { return [item['operatorPlanCode'], item['sellPrice'] - cashback]; });
 }
 
 function getFinalJson(raw_json) {
@@ -76,6 +76,9 @@ module.exports = {
 				var kode = value[0],
 					harga = parseInt(value[1]),
 					kode_translate = kode.replace(/[a-zA-Z]/g, "");
+
+				let blacklist = ['DATA_OWSEM_UNLI16', 'DATA_OWSEM_UNLI24', 'DATA_OWSEM_UNLI32', 'DATA_OWSEM_UNLI48', 'DATA_OWSEM_UNLI80']
+				if (blacklist.indexOf(kode) >= 0) return callback(null, true);
 
 				args.sequelize.child.query(`call sp_master_harga('${kode}','${harga}',${provider_id},${penyedia_id},${kode_translate},'${moment.tz(moment(), "Asia/Jakarta").format()}')`).then(result => {
 					callback(null, true)
