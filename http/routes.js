@@ -101,10 +101,10 @@ module.exports = (express, app, args) => {
     app.get('/topindo', (req, res) => {
         fungsi_bot.topindo(args, (err, result) => {
             if (err) {
-                bot.sendMessage(235462443, err)
+                //bot.sendMessage(235462443, err)
                 res.status(500).json(err)
             } else {
-                bot.sendMessage(235462443, result)
+                //bot.sendMessage(235462443, result)
                 res.json(result)
             }
         });
