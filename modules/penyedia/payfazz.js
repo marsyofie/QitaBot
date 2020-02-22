@@ -4,11 +4,6 @@ const moment = require('moment');
 const cashback = parseInt(process.env.CB_PAYFAZZ);
 
 function getArray(list) {
-	// let arr_result = [];
-	// for (let j = 0; j < list.length; j++) {
-	// 	arr_result.push([list[j].operatorPlanCode, list[j].sellPrice])
-	// }
-	// return arr_result;
 	return list.map(function(item) { return [item['operatorPlanCode'], item['sellPrice'] - cashback]; });
 }
 
@@ -45,7 +40,7 @@ module.exports = {
 
 		let array_json = new Array(5);
 		let provider_id = '',
-			penyedia_id = '3'; // PAYFAZZ
+			penyedia_id = '1'; // PAYFAZZ
 		async.forEachOf(array_json, function(nilai, iterasi, callback) {
 			var operator = [];
 			switch (iterasi) {

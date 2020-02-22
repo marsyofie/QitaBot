@@ -2,7 +2,6 @@
 const async = require('async');
 //const config = require('../../.env');
 const moment = require('moment');
-const request = require('request');
 const margin = parseInt(process.env.MARGIN_TOPINDO);
 
 function sortArray(list) {
@@ -16,12 +15,12 @@ function getHarga(data) {
 
     data.forEach(value => {
         kode = value.kodeproduk;
-        harga = value.harga;
+        harga = value.harga.replace(".", "");
 
-        if(kode == 'TMA4'){
-        	// nothing happen
-        }else{
-        	hasil = [...hasil, [kode, harga]]
+        if (kode == 'TMA4') {
+            // nothing happen
+        } else {
+            hasil = [...hasil, [kode, harga]]
         }
     })
 
@@ -37,37 +36,17 @@ function getFinalJson(raw_json) {
     json.xl = [];
     json.three = [];
 
-    /*raw_json.aaData.forEach(value => {
-    	let kode = value[2],
-    		harga = parseInt(value[3]) + margin;
-
-    	if (value[0].includes('03.TELKOMSEL REGULER') || value[0].includes('02.TELKOMSEL PROMO') || value[0].includes('01.TELKOMSEL SUPER PROMO')) { //|| value[0].includes('02.TELKOMSEL PROMO') || value[0].includes('01.TELKOMSEL SUPER PROMO')
-    		json.tsel = [...json.tsel, [kode, harga]]
-    	} else if (value[0].includes('05.INDOSAT')) {
-    		json.indosat = [...json.indosat, [kode, harga]]
-    	} else if (value[0].includes('06.XL')) {
-    		json.xl = [...json.xl, [kode, harga]]
-    	} else if (value[0].includes('07.AXIS')) {
-    		json.axis = [...json.axis, [kode, harga]]
-    	} else if (value[0].includes('08.THREE')) {
-    		if (!value[2].includes('TMA')) {
-    			json.three = [...json.three, [kode, harga]]
-    		}
-    	}
-    })*/
-
     raw_json.pulsa.forEach(value => {
 
-
-        if (value.namaoperator.includes('TELKOMSEL REGULER') || value.namaoperator.includes('TELKOMSEL PROMO') || value.namaoperator.includes('TELKOMSEL SUPER PROMO')) { //|| value[0].includes('02.TELKOMSEL PROMO') || value[0].includes('01.TELKOMSEL SUPER PROMO')
+        if (value.nameoperator.includes('TELKOMSEL REGULER') || value.nameoperator.includes('TELKOMSEL SUPER PROMO')) {
             json.tsel = [...json.tsel, ...getHarga(value.data)];
-        } else if (value.namaoperator.includes('05.INDOSAT')) {
+        } else if (value.nameoperator.includes('05.INDOSAT') || value.nameoperator.includes('SUPER PROMO INDOSAT')) {
             json.indosat = [...json.indosat, ...getHarga(value.data)]
-        } else if (value.namaoperator.includes('06.XL')) {
+        } else if (value.nameoperator.includes('06.XL') || value.nameoperator.includes('SUPER PROMO XL')) {
             json.xl = [...json.xl, ...getHarga(value.data)]
-        } else if (value.namaoperator.includes('07.AXIS')) {
+        } else if (value.nameoperator.includes('07.AXIS') || value.nameoperator.includes('SUPER PROMO AXIS')) {
             json.axis = [...json.axis, ...getHarga(value.data)]
-        } else if (value.namaoperator.includes('08.THREE')) {
+        } else if (value.nameoperator.includes('08.THREE')) {
             json.three = [...json.three, ...getHarga(value.data)]
         }
     })
@@ -88,7 +67,7 @@ module.exports = {
 
         var array_json = new Array(5);
         var provider_id = '',
-            penyedia_id = '7'; // TOPINDO
+            penyedia_id = '2'; // TOPINDO
         async.forEachOf(array_json, function(nilai, iterasi, callback) {
             var operator = [];
             switch (iterasi) {
@@ -157,46 +136,38 @@ module.exports = {
                         callback('Token tidak ditemukan')
                     }
                 }).catch(err => {
+                    console.log(err)
                     callback(err.message)
                 })
             },
             function(token, callback) {
-                let url = 'http://178.128.91.133:9993/apps/v8/transactions/pay';
-                let data = {
-                    gzip: true,
-                    json: true,
-                    timeout: 120000,
-                    body: {
-                        uuid: process.env.UUID_TOPINDO,
-                        kodeproduk: kode,
-                        tujuan: no_hp,
-                        pin: pin,
-                        jenis: "0"
+                const request = require('request');
+                var options = {
+                    'method': 'POST',
+                    'url': 'https://topindo-warehouse.id:9997/api/apps/transaction/pay',
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token,
+                        'topindosecret': process.env.TOPINDO_SECRET,
+                        'User-Agent': 'okhttp/3.12.1',
+                        'Accept-Encoding': 'gzip, deflate'
                     },
-                    headers: {
-                        'authorization': `Bearer ${token}`,
-                        'irsauth': process.env.IRS_AUTH_TOPINDO,
-                        'User-Agent': 'okhttp/3.10.0',
-                    }
-                }
+                    body: JSON.stringify({
+                        "uuid": process.env.UUID_TOPINDO,
+                        "productCode": kode,
+                        "phone": no_hp,
+                        "sendTo": "",
+                        "type": "0",
+                        "pin": pin,
+                        "counter": ""
+                    })
+                };
 
-                request.post(url, data, function(err, response, rows) {
-                    if (err) {
-                        switch (err.code) {
-                            case 'ESOCKETTIMEOUT':
-                                callback(null, 'Transaksi sedang diproses, silahkan tunggu bos.')
-                                break;
-                            default:
-                                callback('Error saat transaksi:\n' + err.message)
-                        }
-                    } else {
-                        if (rows.success) {
-                            callback(null, JSON.stringify(rows));
-                        } else {
-                            callback(JSON.stringify(rows))
-                        }
-                    }
-                })
+                request(options, function(error, response) {
+                    if (error) return callback(error);
+                    if (response.body.status == '200') return callback(null, response.body.values.message)
+                    callback(JSON.stringify(response.body));
+                });
             },
         ], function(err, result) {
             if (err) {

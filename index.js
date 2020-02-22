@@ -5,7 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override');
 const dependencies = require('./dependencies');
-const request = require('request');
+const request = require('axios');
 const moment = require('moment');
 const app = express();
 const routes = dependencies.routes();
@@ -13,7 +13,7 @@ require('dotenv/config')
 
 const PORT = process.env.PORT || process.env.SERVER_PORT;
 const time_reconnect = 1200000;
-const time_reconnect_endpoint = 2 * 60 * 60 * 1000;// 2jam
+const time_reconnect_endpoint = 2 * 60 * 60 * 1000; // 2jam
 
 //Sequelize MYSQL
 const Op = Sequelize.Op,
@@ -71,109 +71,57 @@ app.listen(PORT, () => {
 
 //auto hit endpoint /
 setInterval(function() {
-    let data = { json: true, gzip: true, }
-    request.get(process.env.URL_HEROKU, data, function(err, response, rows) {
-        if (err) {
-            console.log(err)
-        } else {
+    let config = { timeout: 120000 }
+    request.get(process.env.URL_HEROKU, config)
+        .then(rows => {
             console.log(rows)
-        }
-    });
+        }).catch(err => {
+            console.log(err)
+        });
 }, time_reconnect);
-
-//auto hit endpoint /duta
-// setInterval(function() {
-//     let data = { json: true, gzip: true, }
-//     request.get(process.env.URL_HEROKU + 'duta', data, function(err, response, rows) {
-//         if (err) {
-//             console.log(err)
-//         } else {
-//             console.log(rows)
-//         }
-//     });
-// }, time_reconnect_endpoint + 120000);
-
-// //auto hit endpoint /portalpulsa
-// // setInterval(function() {
-// //     let data = { gzip: true, }
-// //     request.get(process.env.URL_HEROKU + 'portalpulsa', data, function(err, response, rows) {
-// //         if (err) {
-// //             console.log(err)
-// //         } else {
-// //             console.log(rows)
-// //         }
-// //     });
-// // }, parseInt(process.env.TIME_RECONNECT_ENDPOINT) - 7200000);
-
-//auto hit endpoint /androreload
-// setInterval(function() {
-//     let data = { gzip: true, }
-//     request.get(process.env.URL_HEROKU + 'androreload', data, function(err, response, rows) {
-//         if (err) {
-//             console.log(err)
-//         } else {
-//             console.log(rows)
-//         }
-//     });
-// }, time_reconnect_endpoint - 1500000);
 
 // //auto hit endpoint /payfazz
 setInterval(function() {
-    let data = { json: true, gzip: true, }
-    request.get(process.env.URL_HEROKU + 'payfazz', data, function(err, response, rows) {
-        if (err) {
-            console.log(err)
-        } else {
+    let config = { timeout: 120000 }
+    request.get(process.env.URL_HEROKU + 'payfazz', config)
+        .then(rows => {
             console.log(rows)
-        }
-    });
+        }).catch(err => {
+            console.log(err)
+        });
 }, time_reconnect_endpoint);
 
-// //auto hit endpoint /bukalapak
-// // setInterval(function() {
-// //     let data = { json: true, gzip: true, }
-// //     request.get(process.env.URL_HEROKU + 'bukalapak', data, function(err, response, rows) {
-// //         if (err) {
-// //             console.log(err)
-// //         } else {
-// //             console.log(rows)
-// //         }
-// //     });
-// // }, parseInt(process.env.TIME_RECONNECT_ENDPOINT));
-
-// //auto hit endpoint /topindo
+/*
+//auto hit endpoint /bukalapak
 setInterval(function() {
-    let data = { json: true, gzip: true, }
-    request.get(process.env.URL_HEROKU + 'topindo', data, function(err, response, rows) {
-        if (err) {
-            console.log(err)
-        } else {
+    let config = { timeout: 120000 }
+    request.get(process.env.URL_HEROKU + 'bukalapak', config)
+        .then(rows => {
             console.log(rows)
-        }
-    });
+        }).catch(err => {
+            console.log(err)
+        });
+}, time_reconnect_endpoint);*/
+
+/*
+//auto hit endpoint /topindo
+setInterval(function() {
+    let config = { timeout: 120000 }
+    request.get(process.env.URL_HEROKU + 'topindo', config)
+        .then(rows => {
+            console.log(rows)
+        }).catch(err => {
+            console.log(err)
+        });
 }, time_reconnect_endpoint - 3800000);
 
-// //auto hit endpoint /xmltronik
+//auto hit endpoint /xmltronik
 setInterval(function() {
-    let data = { json: true, gzip: true, }
-    request.get(process.env.URL_HEROKU + 'xmltronik', data, function(err, response, rows) {
-        if (err) {
-            console.log(err)
-        } else {
+    let config = { timeout: 120000 }
+    request.get(process.env.URL_HEROKU + 'xmltronik', config)
+        .then(rows => {
             console.log(rows)
-        }
-    });
-}, time_reconnect_endpoint - 2000000);
-
-
-// //auto hit endpoint /tmr
-// setInterval(function() {
-//     let data = { json: true, gzip: true, }
-//     request.get(process.env.URL_HEROKU + 'tmr', data, function(err, response, rows) {
-//         if (err) {
-//             console.log(err)
-//         } else {
-//             console.log(rows)
-//         }
-//     });
-// }, time_reconnect_endpoint - 3500000);
+        }).catch(err => {
+            console.log(err)
+        });
+}, time_reconnect_endpoint - 2000000);*/
