@@ -12,7 +12,7 @@ const routes = dependencies.routes();
 require('dotenv/config')
 
 const PORT = process.env.PORT || process.env.SERVER_PORT;
-const time_reconnect = 1200000;
+const time_reconnect =  1 * 2 * 60 * 1000; // 20 menit
 const time_reconnect_endpoint = 2 * 60 * 60 * 1000; // 2jam
 
 //Sequelize MYSQL
@@ -71,7 +71,12 @@ app.listen(PORT, () => {
 
 //auto hit endpoint /
 setInterval(function() {
-    let config = { timeout: 120000 }
+    let config = {
+        timeout: 120000,
+        params: {
+            id: "local"
+        }
+    }
     request.get(process.env.URL_HEROKU, config)
         .then(rows => {
             console.log(rows)
@@ -103,7 +108,7 @@ setInterval(function() {
         });
 }, time_reconnect_endpoint);*/
 
-/*
+
 //auto hit endpoint /topindo
 setInterval(function() {
     let config = { timeout: 120000 }
@@ -115,6 +120,7 @@ setInterval(function() {
         });
 }, time_reconnect_endpoint - 3800000);
 
+/*
 //auto hit endpoint /xmltronik
 setInterval(function() {
     let config = { timeout: 120000 }

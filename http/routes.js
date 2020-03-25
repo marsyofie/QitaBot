@@ -347,7 +347,7 @@ module.exports = (express, app, args) => {
     //===========================================
 
     app.get('/', (request, response) => {
-        // bot.sendMessage(235462443, 'Endpoint / telah di hit')
+        bot.sendMessage(235462443, 'index ==> '+request.params.id)
         return response.status(200).send({
             message: "It's Work"
         });
